@@ -1,0 +1,4 @@
+*.dmg
+*.zip
+SHA256-*.txt
+release-notes.txt
