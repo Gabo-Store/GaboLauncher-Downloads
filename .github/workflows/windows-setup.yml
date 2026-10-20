@@ -1,0 +1,16 @@
+name: Verify Windows setup
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  verify:
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - name: Download verification script from this exact commit
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $script=Join-Path $env:RUNNER_TEMP 'verify-gabo-setup.ps1'
+          Invoke-WebRequest "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/$env:GITHUB_SHA/checks/windows-setup.ps1" -OutFile $script
+          & $script
