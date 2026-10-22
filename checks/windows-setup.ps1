@@ -3,7 +3,7 @@ if(-not $env:GITHUB_ACTIONS -or -not $env:RUNNER_TEMP){throw 'Este test solo se 
 $testRoot=Join-Path $env:RUNNER_TEMP ('gabo-setup-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $testRoot | Out-Null
 $install=Join-Path $testRoot 'installed'
-$results=[ordered]@{version='0.9.1';os=[System.Environment]::OSVersion.VersionString;cleanInstall=$false;integrity=$false;loginWindow=$false;uninstall=$false;upgradeFrom='0.9.0';upgrade=$false;licensePreserved=$false;catalogPreserved=$false;gameFilePreserved=$false}
+$results=[ordered]@{version='0.9.2';os=[System.Environment]::OSVersion.VersionString;cleanInstall=$false;integrity=$false;loginWindow=$false;uninstall=$false;upgradeFrom='0.9.1';upgrade=$false;licensePreserved=$false;catalogPreserved=$false;gameFilePreserved=$false}
 function Download-Setup([string]$version,[string]$hash){
  $file=Join-Path $testRoot ('setup-'+$version+'.exe')
  Invoke-WebRequest ('https://gabo-licencias.gabostorecodex.workers.dev/releases/GaboLauncher-Setup-'+$version+'-x64.exe') -OutFile $file
@@ -53,7 +53,7 @@ function Uninstall-Setup {
  if(Test-Path -LiteralPath (Join-Path $install 'GaboLauncher.exe')){throw 'La desinstalación no retiró el host.'}
 }
 try{
- $new=Download-Setup '0.9.1' 'cf349c683e26f620b4835b67f233ac61662f8f35d61ac12ded5d41aedade653e'
+ $new=Download-Setup '0.9.2' 'ceb70b69d5041e8bf3878f7b5be7146934c07cd7d2b11488b696255829255446'
  Install-Setup $new 'clean'
  $results.cleanInstall=$true
  Check-Integrity
@@ -62,7 +62,7 @@ try{
  $results.loginWindow=$true
  Uninstall-Setup
  $results.uninstall=$true
- $old=Download-Setup '0.9.0' 'd4e4775e2b7409668e6794ae0551ee9b9cbac7caf371143e1c25632c8f24bf97'
+ $old=Download-Setup '0.9.1' 'cf349c683e26f620b4835b67f233ac61662f8f35d61ac12ded5d41aedade653e'
  Install-Setup $old 'old'
  $licenseDir=Join-Path $env:LOCALAPPDATA 'GaboLauncherLicencias'
  New-Item -ItemType Directory -Force -Path $licenseDir | Out-Null
